@@ -2,7 +2,7 @@ package br.com.btg.order.api.controller;
 
 import br.com.btg.order.infra.database.model.CustomerModel;
 import br.com.btg.order.api.response.CustomerOrdersResponse;
-import br.com.btg.order.api.response.TotalOrderValueResponse;
+import br.com.btg.order.api.response.TotalOrderAmountResponse;
 import br.com.btg.order.core.service.CustomerService;
 import br.com.btg.order.core.service.OrderService;
 import io.swagger.annotations.*;
@@ -33,7 +33,7 @@ public class OrderController {
             @ApiResponse(code = 404, message = "Order not found.", examples = @Example(value = @ExampleProperty(mediaType = "application/json", value = ERROR_RESPONSE_EXCEPTION_MODEL))),
             @ApiResponse(code = 500, message = "Internal server error,", examples = @Example(value = @ExampleProperty(mediaType = "application/json", value = ERROR_RESPONSE_EXCEPTION_MODEL))),
     })
-    public TotalOrderValueResponse getTotalOrderValue(@PathVariable("id") Long id) {
+    public TotalOrderAmountResponse getTotalOrderValue(@PathVariable("id") Long id) {
         return orderService.getTotalOrderValue(id);
     }
 

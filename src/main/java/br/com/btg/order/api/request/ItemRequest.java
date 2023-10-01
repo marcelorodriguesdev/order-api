@@ -10,19 +10,11 @@ import java.math.BigDecimal;
 public class ItemRequest implements Serializable {
 
     @JsonProperty("produto")
-    private String produto;
+    private String product;
 
     @JsonProperty("quantidade")
-    private long quantidade;
+    private long quantity;
 
     @JsonProperty("preco")
-    private BigDecimal preco;
-
-    @Override
-    public String toString() {
-        return "{\"produto\":\"" + produto + "\""
-                + ", \"quantidade\":\"" + quantidade + "\""
-                + ", \"preco\":\"" + preco + "\""
-                + "}";
-    }
+    private BigDecimal price;
 }

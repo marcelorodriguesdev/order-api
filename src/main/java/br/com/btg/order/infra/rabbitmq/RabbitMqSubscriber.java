@@ -1,6 +1,6 @@
 package br.com.btg.order.infra.rabbitmq;
 
-import br.com.btg.order.api.request.PedidoRequest;
+import br.com.btg.order.api.request.OrderRequest;
 import br.com.btg.order.core.service.RabbitMqService;
 import br.com.btg.order.api.utils.LoggerResponse;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
@@ -18,9 +18,9 @@ public class RabbitMqSubscriber {
     private RabbitMqService rabbitMqService;
 
     @RabbitListener(queues = "${rabbitmq.queue.name}")
-    public void receberPedido(@Payload PedidoRequest payload) {
+    public void receberPedido(@Payload OrderRequest payload) {
         log(INFO, new LoggerResponse("Novo pedido recebido", payload));
-        rabbitMqService.tratarPedido(payload);
+        rabbitMqService.processOrder(payload);
     }
 
 }

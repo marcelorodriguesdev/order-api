@@ -7,10 +7,8 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ClienteResponse {
-
-    private String mensagem;
-    private Long idCliente;
-    private String nomeCliente;
-
+public class CustomerResponse {
+    private String message;
+    private Long customerId;
+    private String customerName;
 }

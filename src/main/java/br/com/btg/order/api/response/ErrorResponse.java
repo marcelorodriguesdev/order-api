@@ -30,5 +30,4 @@ public class ErrorResponse {
       + "  \"code\": \"string\",\n"
       + "  \"message\": \"string\",\n"
       + "}";
-
 }

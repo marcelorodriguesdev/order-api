@@ -6,7 +6,6 @@ import lombok.Getter;
 
 @Getter
 public class ObjectMapperSingleton {
-
     private static ObjectMapper instance = null;
 
     private ObjectMapperSingleton() {

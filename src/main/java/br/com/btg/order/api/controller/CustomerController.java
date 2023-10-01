@@ -1,7 +1,7 @@
 package br.com.btg.order.api.controller;
 
-import br.com.btg.order.api.request.ClienteRequest;
-import br.com.btg.order.api.response.ClienteResponse;
+import br.com.btg.order.api.request.CustomerRequest;
+import br.com.btg.order.api.response.CustomerResponse;
 import br.com.btg.order.api.response.CustomerOrderQuantityResponse;
 import br.com.btg.order.core.service.CustomerService;
 import io.swagger.annotations.*;
@@ -39,8 +39,8 @@ public class CustomerController {
             @ApiResponse(code = 500, message = "Erro interno", examples = @Example(value = @ExampleProperty(mediaType = "application/json", value = ERROR_RESPONSE_EXCEPTION_MODEL))),
         }
     )
-    public ClienteResponse postCliente(@RequestBody @Valid ClienteRequest clienteRequest) {
-        return customerService.salvarCliente(clienteRequest);
+    public CustomerResponse postCliente(@RequestBody @Valid CustomerRequest customerRequest) {
+        return customerService.salvarCliente(customerRequest);
     }
 
 }

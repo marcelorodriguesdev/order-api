@@ -10,10 +10,9 @@ import javax.validation.constraints.NotNull;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ClienteRequest {
+public class CustomerRequest {
 
     @NotNull
     @NotBlank
-    private String nome;
-
+    private String name;
 }

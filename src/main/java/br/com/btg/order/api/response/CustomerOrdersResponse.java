@@ -11,8 +11,8 @@ import java.util.List;
 @AllArgsConstructor
 public class CustomerOrdersResponse {
 
-    private Long idCliente;
-    private String nomeCliente;
-    private List<PedidoResponse> pedidos;
+    private Long customerId;
+    private String customerName;
+    private List<OrderResponse> orders;
 
 }

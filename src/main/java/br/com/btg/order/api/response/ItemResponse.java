@@ -9,10 +9,8 @@ import java.math.BigDecimal;
 @Getter
 @Setter
 @Builder
-public class ItemPedidoResponse {
-
-    private String produto;
-    private Integer quantidade;
-    private BigDecimal preco;
-
+public class ItemResponse {
+    private String product;
+    private Integer quantity;
+    private BigDecimal price;
 }

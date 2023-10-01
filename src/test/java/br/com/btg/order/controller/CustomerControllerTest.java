@@ -3,8 +3,8 @@ package br.com.btg.order.controller;
 import br.com.btg.order.api.controller.CustomerController;
 import br.com.btg.order.core.domain.NotFoundException;
 import br.com.btg.order.core.domain.handler.RestExceptionHandler;
-import br.com.btg.order.api.request.ClienteRequest;
-import br.com.btg.order.api.response.ClienteResponse;
+import br.com.btg.order.api.request.CustomerRequest;
+import br.com.btg.order.api.response.CustomerResponse;
 import br.com.btg.order.api.response.ErrorResponse;
 import br.com.btg.order.api.response.CustomerOrderQuantityResponse;
 import br.com.btg.order.core.service.CustomerService;
@@ -42,7 +42,7 @@ class CustomerControllerTest {
         Long clienteId = 1L;
         int quantidadePedidos = 3;
         CustomerOrderQuantityResponse responseMock = CustomerOrderQuantityResponse.builder()
-                .quantidadePedidos(quantidadePedidos)
+                .ordersQuantity(quantidadePedidos)
                 .build();
         given(customerService.getOrderQuantityForCustomerById(clienteId)).willReturn(responseMock);
         MockHttpServletResponse response = mvc
@@ -52,30 +52,30 @@ class CustomerControllerTest {
 
         String contentAsString = response.getContentAsString();
         CustomerOrderQuantityResponse customerOrderQuantityResponse = new ObjectMapper().readValue(contentAsString, CustomerOrderQuantityResponse.class);
-        assertThat(customerOrderQuantityResponse.getQuantidadePedidos().equals(responseMock.getQuantidadePedidos()));
+        assertThat(customerOrderQuantityResponse.getOrdersQuantity().equals(responseMock.getOrdersQuantity()));
     }
 
     @Test
     void dadoClienteValidoQuandoChamarSalvarClienteEntaoRetornoCreated() throws Exception {
         ObjectMapper mapper =  new ObjectMapper();
-        ClienteRequest clienteRequest = ClienteRequest.builder()
-                .nome("Caio")
+        CustomerRequest customerRequest = CustomerRequest.builder()
+                .name("Caio")
                 .build();
-        ClienteResponse responseMock = ClienteResponse.builder()
-                .mensagem("Cliente salvo com sucesso")
+        CustomerResponse responseMock = CustomerResponse.builder()
+                .message("Cliente salvo com sucesso")
                 .build();
         given(customerService.salvarCliente(any())).willReturn(responseMock);
         MockHttpServletResponse response = mvc
                 .perform(post("http://localhost:8081/" + "v1/customers/")
-                        .content(mapper.writeValueAsString(clienteRequest).getBytes())
+                        .content(mapper.writeValueAsString(customerRequest).getBytes())
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType("application/json"))
                 .andExpect(status().isCreated())
                 .andReturn().getResponse();
 
         String contentAsString = response.getContentAsString();
-        ClienteResponse clienteResponse = mapper.readValue(contentAsString, ClienteResponse.class);
-        assertThat(clienteResponse.getMensagem().equals(responseMock.getMensagem()));
+        CustomerResponse customerResponse = mapper.readValue(contentAsString, CustomerResponse.class);
+        assertThat(customerResponse.getMessage().equals(responseMock.getMessage()));
     }
 
     @Test
@@ -110,12 +110,12 @@ class CustomerControllerTest {
     @Test
     void dadoClienteInvalidoQuandoChamarSalvarClienteEntaoRetornoBadRequest() throws Exception {
         ObjectMapper mapper =  new ObjectMapper();
-        ClienteRequest clienteRequest = ClienteRequest.builder()
-                .nome("")
+        CustomerRequest customerRequest = CustomerRequest.builder()
+                .name("")
                 .build();
         MockHttpServletResponse response = mvc
                 .perform(post("http://localhost:8081/" + "v1/customers")
-                        .content(mapper.writeValueAsString(clienteRequest).getBytes())
+                        .content(mapper.writeValueAsString(customerRequest).getBytes())
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType("application/json"))
                 .andExpect(status().isBadRequest())

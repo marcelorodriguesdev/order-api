@@ -9,9 +9,7 @@ import java.math.BigDecimal;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class TotalOrderValueResponse {
-
-    private Long pedido;
-    private BigDecimal valorTotal;
-
+public class TotalOrderAmountResponse {
+    private Long order;
+    private BigDecimal totalAmount;
 }

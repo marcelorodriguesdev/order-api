@@ -4,7 +4,7 @@ import br.com.btg.order.api.controller.OrderController;
 import br.com.btg.order.core.domain.handler.RestExceptionHandler;
 import br.com.btg.order.infra.database.model.CustomerModel;
 import br.com.btg.order.api.response.CustomerOrdersResponse;
-import br.com.btg.order.api.response.TotalOrderValueResponse;
+import br.com.btg.order.api.response.TotalOrderAmountResponse;
 import br.com.btg.order.core.service.CustomerService;
 import br.com.btg.order.core.service.OrderService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -41,9 +41,9 @@ class OrderControllerTest {
     @Test
     void dadoPedidoValidoQuandoChamarValorTotalPedidoEntaoRetornoOk() throws Exception {
         Long pedidoId = 1L;
-        TotalOrderValueResponse responseMock = TotalOrderValueResponse.builder()
-                .valorTotal(new BigDecimal(10.00))
-                .pedido(pedidoId)
+        TotalOrderAmountResponse responseMock = TotalOrderAmountResponse.builder()
+                .totalAmount(new BigDecimal(10.00))
+                .order(pedidoId)
                 .build();
         given(orderService.getTotalOrderValue(pedidoId)).willReturn(responseMock);
         MockHttpServletResponse response = mvc
@@ -52,15 +52,15 @@ class OrderControllerTest {
                 .andReturn().getResponse();
 
         String contentAsString = response.getContentAsString();
-        TotalOrderValueResponse pedidoResponse = new ObjectMapper().readValue(contentAsString, TotalOrderValueResponse.class);
-        assertThat(pedidoResponse.getValorTotal().equals(responseMock.getValorTotal()));
+        TotalOrderAmountResponse pedidoResponse = new ObjectMapper().readValue(contentAsString, TotalOrderAmountResponse.class);
+        assertThat(pedidoResponse.getTotalAmount().equals(responseMock.getTotalAmount()));
     }
 
     @Test
     void dadoClienteValidoQuandoChamarTodosPedidosEntaoRetornoOk() throws Exception {
         Long clienteId = 1L;
         CustomerOrdersResponse responseMock = CustomerOrdersResponse.builder()
-                .nomeCliente("Caio")
+                .customerName("Caio")
                 .build();
 
         CustomerModel customerModel = CustomerModel.builder()
@@ -78,7 +78,7 @@ class OrderControllerTest {
 
         String contentAsString = response.getContentAsString();
         CustomerOrdersResponse pedidoResponse = new ObjectMapper().readValue(contentAsString, CustomerOrdersResponse.class);
-        assertThat(pedidoResponse.getNomeCliente().equals(responseMock.getNomeCliente()));
+        assertThat(pedidoResponse.getCustomerName().equals(responseMock.getCustomerName()));
     }
 
 }

@@ -1,13 +1,13 @@
 package br.com.btg.order.core.service;
 
 import br.com.btg.order.core.domain.NotFoundException;
-import br.com.btg.order.api.utils.mapper.PedidoMapper;
+import br.com.btg.order.api.utils.mapper.OrderMapper;
 import br.com.btg.order.infra.database.model.CustomerModel;
 import br.com.btg.order.infra.database.model.OrderModel;
-import br.com.btg.order.infra.database.repository.PedidoRepository;
-import br.com.btg.order.api.response.PedidoResponse;
+import br.com.btg.order.infra.database.repository.OrderRepository;
+import br.com.btg.order.api.response.OrderResponse;
 import br.com.btg.order.api.response.CustomerOrdersResponse;
-import br.com.btg.order.api.response.TotalOrderValueResponse;
+import br.com.btg.order.api.response.TotalOrderAmountResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,46 +20,46 @@ import java.util.List;
 public class OrderService {
 
     @Autowired
-    private PedidoRepository pedidoRepository;
+    private OrderRepository orderRepository;
 
     @Autowired
-    private PedidoMapper pedidoMapper;
+    private OrderMapper orderMapper;
 
-    public PedidoResponse getPedidoPorId(Long id) {
-        OrderModel orderModel = pedidoRepository.findById(id).orElseThrow(() -> new NotFoundException("Pedido não localizado"));
-        PedidoResponse pedidoResponse = pedidoMapper.modelToResponse(orderModel);
-        return pedidoResponse;
+    public OrderResponse getPedidoPorId(Long id) {
+        OrderModel orderModel = orderRepository.findById(id).orElseThrow(() -> new NotFoundException("Pedido não localizado"));
+        OrderResponse orderResponse = orderMapper.modelToResponse(orderModel);
+        return orderResponse;
     }
 
-    public TotalOrderValueResponse getTotalOrderValue(Long id) {
-        OrderModel orderModel = pedidoRepository.findById(id).orElseThrow(() -> new NotFoundException("Pedido não localizado"));
+    public TotalOrderAmountResponse getTotalOrderValue(Long id) {
+        OrderModel orderModel = orderRepository.findById(id).orElseThrow(() -> new NotFoundException("Pedido não localizado"));
 
         BigDecimal valorTotal = BigDecimal.valueOf(orderModel.getItems().stream()
                 .mapToDouble(item -> item.getQuantity() * item.getProduct().getPrice())
                 .sum()).setScale(2, RoundingMode.CEILING);
 
-        return TotalOrderValueResponse.builder()
-                .pedido(id)
-                .valorTotal(valorTotal)
+        return TotalOrderAmountResponse.builder()
+                .order(id)
+                .totalAmount(valorTotal)
                 .build();
     }
 
     public CustomerOrdersResponse getOrdersByCustomer(CustomerModel customerModel) {
-        List<PedidoResponse> pedidosResponse = new ArrayList<>();
+        List<OrderResponse> pedidosResponse = new ArrayList<>();
         List<OrderModel> pedidosModelPorCliente = getPedidosModelPorCliente(customerModel);
         pedidosModelPorCliente.forEach(pedido -> {
-            PedidoResponse pedidoResponse = pedidoMapper.modelToResponse(pedido);
-            pedidosResponse.add(pedidoResponse);
+            OrderResponse orderResponse = orderMapper.modelToResponse(pedido);
+            pedidosResponse.add(orderResponse);
         });
         return CustomerOrdersResponse.builder()
-                .idCliente(customerModel.getId())
-                .nomeCliente(customerModel.getName())
-                .pedidos(pedidosResponse)
+                .customerId(customerModel.getId())
+                .customerName(customerModel.getName())
+                .orders(pedidosResponse)
                 .build();
     }
 
     public List<OrderModel> getPedidosModelPorCliente(CustomerModel customerModel) {
-        return pedidoRepository.findAllByCliente(customerModel);
+        return orderRepository.findAllByCliente(customerModel);
     }
 
 }

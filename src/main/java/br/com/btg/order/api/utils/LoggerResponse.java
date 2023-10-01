@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 public class LoggerResponse {
 
     private String level;
-    private String mensagem;
+    private String message;
     private Object body;
     private LocalDateTime timestamp;
     private String aplicacao;
@@ -23,8 +23,8 @@ public class LoggerResponse {
     @JsonIgnore
     private ObjectMapper mapper;
 
-    public LoggerResponse(String mensagem, Object body) {
-        this.mensagem = mensagem;
+    public LoggerResponse(String message, Object body) {
+        this.message = message;
         this.body = body;
         this.timestamp = LocalDateTime.now();
         this.aplicacao = "desafioengenharia";

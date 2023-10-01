@@ -6,7 +6,6 @@ import java.io.PrintStream;
 
 @Getter
 public class LoggerUtils {
-
     public static final String ERROR = "error";
     public static final String INFO = "info";
 
@@ -20,5 +19,4 @@ public class LoggerUtils {
     private static PrintStream getTargetPrintStream() {
         return System.out;
     }
-
 }

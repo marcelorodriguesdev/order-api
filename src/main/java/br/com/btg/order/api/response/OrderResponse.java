@@ -9,10 +9,10 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class PedidoResponse {
+public class OrderResponse {
 
     private Long codigoPedido;
     private Long codigoCliente;
-    private List<ItemPedidoResponse> itens;
+    private List<ItemResponse> itens;
 
 }

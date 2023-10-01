@@ -9,8 +9,7 @@ import lombok.*;
 @Builder
 public class CustomerOrderQuantityResponse {
 
-    private Long idCLiente;
-    private String nomeCLiente;
-    private Integer quantidadePedidos;
-
+    private Long customerId;
+    private String customerName;
+    private Integer ordersQuantity;
 }

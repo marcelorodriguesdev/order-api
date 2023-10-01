@@ -1,6 +1,6 @@
 package br.com.btg.order.api.utils;
 
-import br.com.btg.order.api.request.PedidoRequest;
+import br.com.btg.order.api.request.OrderRequest;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.*;
@@ -45,11 +45,11 @@ public class ConverterUtils {
     }
     // Serialize/deserialize helpers
 
-    public static PedidoRequest fromJsonString(String json) throws IOException {
+    public static OrderRequest fromJsonString(String json) throws IOException {
         return getObjectReader().readValue(json);
     }
 
-    public static String toJsonString(PedidoRequest obj) throws JsonProcessingException {
+    public static String toJsonString(OrderRequest obj) throws JsonProcessingException {
         return getObjectWriter().writeValueAsString(obj);
     }
 
@@ -70,8 +70,8 @@ public class ConverterUtils {
             }
         });
         mapper.registerModule(module);
-        reader = mapper.readerFor(PedidoRequest.class);
-        writer = mapper.writerFor(PedidoRequest.class);
+        reader = mapper.readerFor(OrderRequest.class);
+        writer = mapper.writerFor(OrderRequest.class);
     }
 
     private static ObjectReader getObjectReader() {
