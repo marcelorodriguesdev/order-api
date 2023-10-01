@@ -1,6 +1,6 @@
 package br.com.btg.order.model;
 
-import br.com.btg.order.infra.database.model.ClienteModel;
+import br.com.btg.order.infra.database.model.CustomerModel;
 import br.com.btg.order.infra.database.model.ItemPedidoModel;
 import br.com.btg.order.infra.database.model.PedidoModel;
 import br.com.btg.order.infra.database.model.ProdutoModel;
@@ -69,7 +69,7 @@ public class ModelsTest {
 
     @Test
     public void testClienteModel() throws Exception {
-        assertNotNull(new ClienteModel());
+        assertNotNull(new CustomerModel());
         assertThat(ModelsTest.class, allOf(hasValidBeanConstructor(),
                 hasValidBeanEquals(),
                 hasValidBeanEqualsExcluding(),

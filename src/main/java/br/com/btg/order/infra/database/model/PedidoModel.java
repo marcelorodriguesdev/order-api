@@ -24,7 +24,7 @@ public class PedidoModel {
     @JsonManagedReference
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_customer")
-    private ClienteModel customer;
+    private CustomerModel customer;
 
     @Column(name = "data_hora_pedido")
     private LocalDateTime dataHoraPedido;

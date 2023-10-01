@@ -7,7 +7,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class QuantidadePedidosClienteResponse {
+public class CustomerOrderQuantityResponse {
 
     private Long idCLiente;
     private String nomeCLiente;

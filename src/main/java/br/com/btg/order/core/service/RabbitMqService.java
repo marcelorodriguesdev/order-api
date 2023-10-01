@@ -1,7 +1,7 @@
 package br.com.btg.order.core.service;
 
 import br.com.btg.order.core.domain.NotFoundException;
-import br.com.btg.order.infra.database.model.ClienteModel;
+import br.com.btg.order.infra.database.model.CustomerModel;
 import br.com.btg.order.infra.database.model.ItemPedidoModel;
 import br.com.btg.order.infra.database.model.PedidoModel;
 import br.com.btg.order.infra.database.model.ProdutoModel;
@@ -34,17 +34,17 @@ public class RabbitMqService {
 
     @Transactional
     public void tratarPedido(PedidoRequest payload) {
-        ClienteModel clienteModel = getClienteModel(payload);
-        PedidoModel pedidoModel = salvarPedido(payload, clienteModel);
+        CustomerModel customerModel = getClienteModel(payload);
+        PedidoModel pedidoModel = salvarPedido(payload, customerModel);
         salvarItensModel(payload, pedidoModel);
     }
 
-    private ClienteModel getClienteModel(PedidoRequest payload) {
+    private CustomerModel getClienteModel(PedidoRequest payload) {
         return clienteRepository.findById(payload.getCodigoCliente()).orElseThrow(() -> new NotFoundException("Cliente não localizado"));
     }
 
-    private PedidoModel salvarPedido(PedidoRequest payload, ClienteModel clienteModel) {
-        return pedidoRepository.save(getPedidoModel(payload, clienteModel));
+    private PedidoModel salvarPedido(PedidoRequest payload, CustomerModel customerModel) {
+        return pedidoRepository.save(getPedidoModel(payload, customerModel));
     }
 
     private void salvarItensModel(PedidoRequest payload, PedidoModel pedidoModel) {
@@ -58,10 +58,10 @@ public class RabbitMqService {
         });
     }
 
-    private PedidoModel getPedidoModel(PedidoRequest payload, ClienteModel clienteModel) {
+    private PedidoModel getPedidoModel(PedidoRequest payload, CustomerModel customerModel) {
         return PedidoModel.builder()
                 .codigoPedido(payload.getCodigoPedido())
-                .customer(clienteModel)
+                .customer(customerModel)
                 .dataHoraPedido(LocalDateTime.now())
                 .build();
     }

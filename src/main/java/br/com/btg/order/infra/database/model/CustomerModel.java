@@ -13,7 +13,7 @@ import javax.persistence.*;
 @Builder
 @Entity
 @Table(name = "tb_customer")
-public class ClienteModel {
+public class CustomerModel {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;

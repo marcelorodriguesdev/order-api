@@ -1,13 +1,13 @@
 package br.com.btg.order.controller;
 
-import br.com.btg.order.api.controller.ClienteController;
+import br.com.btg.order.api.controller.CustomerController;
 import br.com.btg.order.core.domain.NotFoundException;
 import br.com.btg.order.core.domain.handler.RestExceptionHandler;
 import br.com.btg.order.api.request.ClienteRequest;
 import br.com.btg.order.api.response.ClienteResponse;
 import br.com.btg.order.api.response.ErrorResponse;
-import br.com.btg.order.api.response.QuantidadePedidosClienteResponse;
-import br.com.btg.order.core.service.ClienteService;
+import br.com.btg.order.api.response.CustomerOrderQuantityResponse;
+import br.com.btg.order.core.service.CustomerService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,32 +27,32 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @AutoConfigureMockMvc
-@SpringBootTest(classes = {ClienteController.class, RestExceptionHandler.class})
+@SpringBootTest(classes = {CustomerController.class, RestExceptionHandler.class})
 @EnableWebMvc
-class ClienteControllerTest {
+class CustomerControllerTest {
 
     @Autowired
     MockMvc mvc;
 
     @MockBean
-    private ClienteService clienteService;
+    private CustomerService customerService;
 
     @Test
     void dadoClienteValidoQuandoChamarQuantidadePedidosEntaoRetornoOk() throws Exception {
         Long clienteId = 1L;
         int quantidadePedidos = 3;
-        QuantidadePedidosClienteResponse responseMock = QuantidadePedidosClienteResponse.builder()
+        CustomerOrderQuantityResponse responseMock = CustomerOrderQuantityResponse.builder()
                 .quantidadePedidos(quantidadePedidos)
                 .build();
-        given(clienteService.getQuantidadePedidosClientePorId(clienteId)).willReturn(responseMock);
+        given(customerService.getOrderQuantityForCustomerById(clienteId)).willReturn(responseMock);
         MockHttpServletResponse response = mvc
-                .perform(get("http://localhost:8081/" + "v1/customers/" + clienteId + "/quantidade-pedidos"))
+                .perform(get("http://localhost:8081/" + "v1/customers/" + clienteId + "/orders_quantity"))
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
 
         String contentAsString = response.getContentAsString();
-        QuantidadePedidosClienteResponse quantidadePedidosClienteResponse = new ObjectMapper().readValue(contentAsString, QuantidadePedidosClienteResponse.class);
-        assertThat(quantidadePedidosClienteResponse.getQuantidadePedidos().equals(responseMock.getQuantidadePedidos()));
+        CustomerOrderQuantityResponse customerOrderQuantityResponse = new ObjectMapper().readValue(contentAsString, CustomerOrderQuantityResponse.class);
+        assertThat(customerOrderQuantityResponse.getQuantidadePedidos().equals(responseMock.getQuantidadePedidos()));
     }
 
     @Test
@@ -64,7 +64,7 @@ class ClienteControllerTest {
         ClienteResponse responseMock = ClienteResponse.builder()
                 .mensagem("Cliente salvo com sucesso")
                 .build();
-        given(clienteService.salvarCliente(any())).willReturn(responseMock);
+        given(customerService.salvarCliente(any())).willReturn(responseMock);
         MockHttpServletResponse response = mvc
                 .perform(post("http://localhost:8081/" + "v1/customers/")
                         .content(mapper.writeValueAsString(clienteRequest).getBytes())
@@ -81,9 +81,9 @@ class ClienteControllerTest {
     @Test
     void dadoClienteInvalidoQuandoChamarQuantidadePedidosEntaoRetornoNotFound() throws Exception {
         Long clienteId = 1L;
-        given(clienteService.getQuantidadePedidosClientePorId(clienteId)).willThrow(new NotFoundException("Cliente não localizado"));
+        given(customerService.getOrderQuantityForCustomerById(clienteId)).willThrow(new NotFoundException("Cliente não localizado"));
         MockHttpServletResponse response = mvc
-                .perform(get("http://localhost:8081/" + "v1/customers/" + clienteId + "/quantidade-pedidos"))
+                .perform(get("http://localhost:8081/" + "v1/customers/" + clienteId + "/orders_quantity"))
                 .andExpect(status().isNotFound())
                 .andReturn().getResponse();
 
@@ -95,9 +95,9 @@ class ClienteControllerTest {
     @Test
     void dadoClienteInvalidoQuandoErroInternoEntaoRetornoInternalServerError() throws Exception {
         Long clienteId = 1L;
-        given(clienteService.getQuantidadePedidosClientePorId(clienteId)).willThrow(new RuntimeException("Erro interno"));
+        given(customerService.getOrderQuantityForCustomerById(clienteId)).willThrow(new RuntimeException("Erro interno"));
         MockHttpServletResponse response = mvc
-                .perform(get("http://localhost:8081/" + "v1/customers/" + clienteId + "/quantidade-pedidos"))
+                .perform(get("http://localhost:8081/" + "v1/customers/" + clienteId + "/orders_quantity"))
                 .andExpect(status().isInternalServerError())
                 .andReturn().getResponse();
 

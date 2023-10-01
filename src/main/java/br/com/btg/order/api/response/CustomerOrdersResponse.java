@@ -9,7 +9,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class PedidosClienteResponse {
+public class CustomerOrdersResponse {
 
     private Long idCliente;
     private String nomeCliente;

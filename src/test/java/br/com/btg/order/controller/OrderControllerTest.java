@@ -1,12 +1,12 @@
 package br.com.btg.order.controller;
 
-import br.com.btg.order.api.controller.PedidoController;
+import br.com.btg.order.api.controller.OrderController;
 import br.com.btg.order.core.domain.handler.RestExceptionHandler;
-import br.com.btg.order.infra.database.model.ClienteModel;
-import br.com.btg.order.api.response.PedidosClienteResponse;
-import br.com.btg.order.api.response.ValorTotalPedidoResponse;
-import br.com.btg.order.core.service.ClienteService;
-import br.com.btg.order.core.service.PedidoService;
+import br.com.btg.order.infra.database.model.CustomerModel;
+import br.com.btg.order.api.response.CustomerOrdersResponse;
+import br.com.btg.order.api.response.TotalOrderValueResponse;
+import br.com.btg.order.core.service.CustomerService;
+import br.com.btg.order.core.service.OrderService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,59 +25,59 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @AutoConfigureMockMvc
-@SpringBootTest(classes = {PedidoController.class, RestExceptionHandler.class})
+@SpringBootTest(classes = {OrderController.class, RestExceptionHandler.class})
 @EnableWebMvc
-class PedidoControllerTest {
+class OrderControllerTest {
 
     @Autowired
     MockMvc mvc;
 
     @MockBean
-    private ClienteService clienteService;
+    private CustomerService customerService;
 
     @MockBean
-    private PedidoService pedidoService;
+    private OrderService orderService;
 
     @Test
     void dadoPedidoValidoQuandoChamarValorTotalPedidoEntaoRetornoOk() throws Exception {
         Long pedidoId = 1L;
-        ValorTotalPedidoResponse responseMock = ValorTotalPedidoResponse.builder()
+        TotalOrderValueResponse responseMock = TotalOrderValueResponse.builder()
                 .valorTotal(new BigDecimal(10.00))
                 .pedido(pedidoId)
                 .build();
-        given(pedidoService.getValorTotalPedido(pedidoId)).willReturn(responseMock);
+        given(orderService.getTotalOrderValue(pedidoId)).willReturn(responseMock);
         MockHttpServletResponse response = mvc
-                .perform(get("http://localhost:8081/" + "v1/orders/" + pedidoId + "/valor-total"))
+                .perform(get("http://localhost:8081/" + "v1/orders/" + pedidoId + "/total_amount"))
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
 
         String contentAsString = response.getContentAsString();
-        ValorTotalPedidoResponse pedidoResponse = new ObjectMapper().readValue(contentAsString, ValorTotalPedidoResponse.class);
+        TotalOrderValueResponse pedidoResponse = new ObjectMapper().readValue(contentAsString, TotalOrderValueResponse.class);
         assertThat(pedidoResponse.getValorTotal().equals(responseMock.getValorTotal()));
     }
 
     @Test
     void dadoClienteValidoQuandoChamarTodosPedidosEntaoRetornoOk() throws Exception {
         Long clienteId = 1L;
-        PedidosClienteResponse responseMock = PedidosClienteResponse.builder()
+        CustomerOrdersResponse responseMock = CustomerOrdersResponse.builder()
                 .nomeCliente("Caio")
                 .build();
 
-        ClienteModel clienteModel = ClienteModel.builder()
+        CustomerModel customerModel = CustomerModel.builder()
                 .id(1L)
                 .name("Caio")
                 .build();
 
-        given(clienteService.getClientePorId(clienteId)).willReturn(clienteModel);
-        given(pedidoService.getPedidosResponseModelPorCliente(clienteModel)).willReturn(responseMock);
+        given(customerService.getCustomerById(clienteId)).willReturn(customerModel);
+        given(orderService.getOrdersByCustomer(customerModel)).willReturn(responseMock);
 
         MockHttpServletResponse response = mvc
-                .perform(get("http://localhost:8081/" + "v1/orders/id-cliente/" + clienteId))
+                .perform(get("http://localhost:8081/" + "v1/orders/" + clienteId))
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
 
         String contentAsString = response.getContentAsString();
-        PedidosClienteResponse pedidoResponse = new ObjectMapper().readValue(contentAsString, PedidosClienteResponse.class);
+        CustomerOrdersResponse pedidoResponse = new ObjectMapper().readValue(contentAsString, CustomerOrdersResponse.class);
         assertThat(pedidoResponse.getNomeCliente().equals(responseMock.getNomeCliente()));
     }
 
