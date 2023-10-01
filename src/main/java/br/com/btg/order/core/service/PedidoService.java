@@ -1,7 +1,7 @@
 package br.com.btg.order.core.service;
 
 import br.com.btg.order.core.domain.NotFoundException;
-import br.com.btg.order.api.mapper.PedidoMapper;
+import br.com.btg.order.api.utils.mapper.PedidoMapper;
 import br.com.btg.order.infra.database.model.ClienteModel;
 import br.com.btg.order.infra.database.model.PedidoModel;
 import br.com.btg.order.infra.database.repository.PedidoRepository;
@@ -34,8 +34,8 @@ public class PedidoService {
     public ValorTotalPedidoResponse getValorTotalPedido(Long id) {
         PedidoModel pedidoModel = pedidoRepository.findById(id).orElseThrow(() -> new NotFoundException("Pedido não localizado"));
 
-        BigDecimal valorTotal = BigDecimal.valueOf(pedidoModel.getItens().stream()
-                .mapToDouble(item -> item.getQuantidade() * item.getProduto().getPreco())
+        BigDecimal valorTotal = BigDecimal.valueOf(pedidoModel.getItems().stream()
+                .mapToDouble(item -> item.getQuantity() * item.getProduct().getPrice())
                 .sum()).setScale(2, RoundingMode.CEILING);
 
         return ValorTotalPedidoResponse.builder()
@@ -53,7 +53,7 @@ public class PedidoService {
         });
         return PedidosClienteResponse.builder()
                 .idCliente(clienteModel.getId())
-                .nomeCliente(clienteModel.getNome())
+                .nomeCliente(clienteModel.getName())
                 .pedidos(pedidosResponse)
                 .build();
     }

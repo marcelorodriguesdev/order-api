@@ -14,14 +14,12 @@ import javax.persistence.Table;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "produto")
+@Table(name = "tb_product")
 public class ProdutoModel {
-
     @Id
     private Long id;
 
-    private String nome;
+    private String name;
 
-    private Double preco;
-
+    private Double price;
 }

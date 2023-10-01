@@ -13,22 +13,20 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "item_pedido")
+@Table(name = "tb_item")
 public class ItemPedidoModel {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "codigo_pedido")
-    private PedidoModel pedido;
+    @JoinColumn(name = "id_order")
+    private PedidoModel order;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "codigo_produto")
-    private ProdutoModel produto;
+    @JoinColumn(name = "id_product")
+    private ProdutoModel product;
 
-    private Integer quantidade;
-
+    private Integer quantity;
 }

@@ -46,7 +46,7 @@ class ClienteControllerTest {
                 .build();
         given(clienteService.getQuantidadePedidosClientePorId(clienteId)).willReturn(responseMock);
         MockHttpServletResponse response = mvc
-                .perform(get("http://localhost:8081/" + "v1/clientes/" + clienteId + "/quantidade-pedidos"))
+                .perform(get("http://localhost:8081/" + "v1/customers/" + clienteId + "/quantidade-pedidos"))
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
 
@@ -66,7 +66,7 @@ class ClienteControllerTest {
                 .build();
         given(clienteService.salvarCliente(any())).willReturn(responseMock);
         MockHttpServletResponse response = mvc
-                .perform(post("http://localhost:8081/" + "v1/clientes")
+                .perform(post("http://localhost:8081/" + "v1/customers/")
                         .content(mapper.writeValueAsString(clienteRequest).getBytes())
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType("application/json"))
@@ -83,7 +83,7 @@ class ClienteControllerTest {
         Long clienteId = 1L;
         given(clienteService.getQuantidadePedidosClientePorId(clienteId)).willThrow(new NotFoundException("Cliente não localizado"));
         MockHttpServletResponse response = mvc
-                .perform(get("http://localhost:8081/" + "v1/clientes/" + clienteId + "/quantidade-pedidos"))
+                .perform(get("http://localhost:8081/" + "v1/customers/" + clienteId + "/quantidade-pedidos"))
                 .andExpect(status().isNotFound())
                 .andReturn().getResponse();
 
@@ -97,7 +97,7 @@ class ClienteControllerTest {
         Long clienteId = 1L;
         given(clienteService.getQuantidadePedidosClientePorId(clienteId)).willThrow(new RuntimeException("Erro interno"));
         MockHttpServletResponse response = mvc
-                .perform(get("http://localhost:8081/" + "v1/clientes/" + clienteId + "/quantidade-pedidos"))
+                .perform(get("http://localhost:8081/" + "v1/customers/" + clienteId + "/quantidade-pedidos"))
                 .andExpect(status().isInternalServerError())
                 .andReturn().getResponse();
 
@@ -114,7 +114,7 @@ class ClienteControllerTest {
                 .nome("")
                 .build();
         MockHttpServletResponse response = mvc
-                .perform(post("http://localhost:8081/" + "v1/clientes")
+                .perform(post("http://localhost:8081/" + "v1/customers")
                         .content(mapper.writeValueAsString(clienteRequest).getBytes())
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType("application/json"))

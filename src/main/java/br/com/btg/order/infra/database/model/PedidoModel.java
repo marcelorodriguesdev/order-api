@@ -15,22 +15,20 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "pedido")
+@Table(name = "tb_order")
 public class PedidoModel {
-
     @Id
-    @Column(name = "codigo_pedido")
+    @Column(name = "id_order")
     private Long codigoPedido;
 
     @JsonManagedReference
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "codigo_cliente")
-    private ClienteModel cliente;
+    @JoinColumn(name = "id_customer")
+    private ClienteModel customer;
 
     @Column(name = "data_hora_pedido")
     private LocalDateTime dataHoraPedido;
 
-    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL)
-    private List<ItemPedidoModel> itens;
-
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    private List<ItemPedidoModel> items;
 }

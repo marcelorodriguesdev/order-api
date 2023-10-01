@@ -27,18 +27,18 @@ public class ClienteService {
         int quantidadeDePedidos = pedidoService.getPedidosModelPorCliente(clienteModel).size();
         return QuantidadePedidosClienteResponse.builder()
                 .idCLiente(id)
-                .nomeCLiente(clienteModel.getNome())
+                .nomeCLiente(clienteModel.getName())
                 .quantidadePedidos(quantidadeDePedidos)
                 .build();
     }
 
     public ClienteResponse salvarCliente(ClienteRequest clienteRequest) {
         ClienteModel clienteModel = clienteRepository.save(ClienteModel.builder()
-                .nome(clienteRequest.getNome())
+                .name(clienteRequest.getNome())
                 .build());
         return ClienteResponse.builder()
                 .idCliente(clienteModel.getId())
-                .nomeCliente(clienteModel.getNome())
+                .nomeCliente(clienteModel.getName())
                 .mensagem("Cliente salvo com sucesso")
                 .build();
     }

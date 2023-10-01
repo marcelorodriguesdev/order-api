@@ -3,7 +3,6 @@ package br.com.btg.order.controller;
 import br.com.btg.order.api.controller.PedidoController;
 import br.com.btg.order.core.domain.handler.RestExceptionHandler;
 import br.com.btg.order.infra.database.model.ClienteModel;
-import br.com.btg.order.api.response.PedidoResponse;
 import br.com.btg.order.api.response.PedidosClienteResponse;
 import br.com.btg.order.api.response.ValorTotalPedidoResponse;
 import br.com.btg.order.core.service.ClienteService;
@@ -19,7 +18,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
@@ -41,25 +39,6 @@ class PedidoControllerTest {
     private PedidoService pedidoService;
 
     @Test
-    void dadoPedidoValidoQuandoChamarPedidosEntaoRetornoOk() throws Exception {
-        Long pedidoId = 1L;
-        PedidoResponse responseMock = PedidoResponse.builder()
-                .codigoPedido(pedidoId)
-                .codigoCliente(1L)
-                .itens(new ArrayList<>())
-                .build();
-        given(pedidoService.getPedidoPorId(pedidoId)).willReturn(responseMock);
-        MockHttpServletResponse response = mvc
-                .perform(get("http://localhost:8081/" + "v1/pedidos/" + pedidoId))
-                .andExpect(status().isOk())
-                .andReturn().getResponse();
-
-        String contentAsString = response.getContentAsString();
-        PedidoResponse pedidoResponse = new ObjectMapper().readValue(contentAsString, PedidoResponse.class);
-        assertThat(pedidoResponse.getCodigoPedido().equals(responseMock.getCodigoPedido()));
-    }
-
-    @Test
     void dadoPedidoValidoQuandoChamarValorTotalPedidoEntaoRetornoOk() throws Exception {
         Long pedidoId = 1L;
         ValorTotalPedidoResponse responseMock = ValorTotalPedidoResponse.builder()
@@ -68,7 +47,7 @@ class PedidoControllerTest {
                 .build();
         given(pedidoService.getValorTotalPedido(pedidoId)).willReturn(responseMock);
         MockHttpServletResponse response = mvc
-                .perform(get("http://localhost:8081/" + "v1/pedidos/" + pedidoId + "/valor-total"))
+                .perform(get("http://localhost:8081/" + "v1/orders/" + pedidoId + "/valor-total"))
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
 
@@ -86,14 +65,14 @@ class PedidoControllerTest {
 
         ClienteModel clienteModel = ClienteModel.builder()
                 .id(1L)
-                .nome("Caio")
+                .name("Caio")
                 .build();
 
         given(clienteService.getClientePorId(clienteId)).willReturn(clienteModel);
         given(pedidoService.getPedidosResponseModelPorCliente(clienteModel)).willReturn(responseMock);
 
         MockHttpServletResponse response = mvc
-                .perform(get("http://localhost:8081/" + "v1/pedidos/id-cliente/" + clienteId))
+                .perform(get("http://localhost:8081/" + "v1/orders/id-cliente/" + clienteId))
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
 

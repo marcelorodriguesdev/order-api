@@ -11,12 +11,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import static br.com.btg.order.api.response.ErrorResponse.ERROR_RESPONSE_EXCEPTION_MODEL;
 
 @RestController
+@RequestMapping("/v1/orders")
 public class PedidoController {
 
     @Autowired
@@ -25,20 +27,7 @@ public class PedidoController {
     @Autowired
     private ClienteService clienteService;
 
-
-    @GetMapping(value = "v1/pedidos/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Pedido retornado com sucesso."),
-            @ApiResponse(code = 404, message = "Pedido não localizado.", examples = @Example(value = @ExampleProperty(mediaType = "application/json", value = ERROR_RESPONSE_EXCEPTION_MODEL))),
-            @ApiResponse(code = 500, message = "Erro interno", examples = @Example(value = @ExampleProperty(mediaType = "application/json", value = ERROR_RESPONSE_EXCEPTION_MODEL))),
-    })
-    public PedidoResponse getPedidoPorId(@PathVariable("id") Long id) {
-        return pedidoService.getPedidoPorId(id);
-    }
-
-
-    @GetMapping(value = "v1/pedidos/{id}/valor-total")
+    @GetMapping(value = "/{id}/valor-total")
     @ResponseStatus(HttpStatus.OK)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Valor total retornado com sucesso."),
@@ -49,7 +38,7 @@ public class PedidoController {
         return pedidoService.getValorTotalPedido(id);
     }
 
-    @GetMapping(value = "v1/pedidos/id-cliente/{idCliente}")
+    @GetMapping(value = "/id-cliente/{idCliente}")
     @ResponseStatus(HttpStatus.OK)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Pedidos retornados com sucesso."),

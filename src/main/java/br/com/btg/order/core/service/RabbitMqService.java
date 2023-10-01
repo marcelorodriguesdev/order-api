@@ -50,9 +50,9 @@ public class RabbitMqService {
     private void salvarItensModel(PedidoRequest payload, PedidoModel pedidoModel) {
         payload.getItens().forEach(itemRequest -> {
             ItemPedidoModel itemPedidoModel = ItemPedidoModel.builder()
-                    .quantidade((int) itemRequest.getQuantidade())
-                    .pedido(pedidoModel)
-                    .produto(getProdutoModel(itemRequest))
+                    .quantity((int) itemRequest.getQuantidade())
+                    .order(pedidoModel)
+                    .product(getProdutoModel(itemRequest))
                     .build();
             itemPedidoRepository.save(itemPedidoModel);
         });
@@ -61,7 +61,7 @@ public class RabbitMqService {
     private PedidoModel getPedidoModel(PedidoRequest payload, ClienteModel clienteModel) {
         return PedidoModel.builder()
                 .codigoPedido(payload.getCodigoPedido())
-                .cliente(clienteModel)
+                .customer(clienteModel)
                 .dataHoraPedido(LocalDateTime.now())
                 .build();
     }

@@ -1,4 +1,4 @@
-package br.com.btg.order.api.mapper;
+package br.com.btg.order.api.utils.mapper;
 
 import br.com.btg.order.infra.database.model.PedidoModel;
 import br.com.btg.order.api.response.ItemPedidoResponse;
@@ -16,15 +16,15 @@ public abstract class PedidoMapper {
     @BeforeMapping
     protected void setarAtributosDistintosModelToResponse(PedidoModel pedidoModel, @MappingTarget PedidoResponse.PedidoResponseBuilder pedidoResponse) {
         List<ItemPedidoResponse> itensResponse = new ArrayList<>();
-        pedidoModel.getItens().forEach(item ->
+        pedidoModel.getItems().forEach(item ->
                 itensResponse.add(ItemPedidoResponse.builder()
-                        .preco(BigDecimal.valueOf(item.getProduto().getPreco()))
-                        .quantidade(item.getQuantidade())
-                        .produto(item.getProduto().getNome())
+                        .preco(BigDecimal.valueOf(item.getProduct().getPrice()))
+                        .quantidade(item.getQuantity())
+                        .produto(item.getProduct().getName())
                         .build())
         );
         pedidoResponse.itens(itensResponse);
-        pedidoResponse.codigoCliente(pedidoModel.getCliente().getId());
+        pedidoResponse.codigoCliente(pedidoModel.getCustomer().getId());
     }
 
     @Mapping(target = "itens", ignore = true)

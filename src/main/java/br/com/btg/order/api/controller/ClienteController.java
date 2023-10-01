@@ -14,12 +14,14 @@ import javax.validation.Valid;
 import static br.com.btg.order.api.response.ErrorResponse.ERROR_RESPONSE_EXCEPTION_MODEL;
 
 @RestController
+@RequestMapping("/v1/customers")
 public class ClienteController {
 
     @Autowired
+
     private ClienteService clienteService;
 
-    @GetMapping(value = "v1/clientes/{id}/quantidade-pedidos")
+    @GetMapping(value = "/{id}/quantidade-pedidos")
     @ResponseStatus(HttpStatus.OK)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Quantidade de pedidos retornado com sucesso."),
@@ -30,7 +32,7 @@ public class ClienteController {
         return clienteService.getQuantidadePedidosClientePorId(id);
     }
 
-    @PostMapping(value = "v1/clientes")
+    @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "Cliente salvo com sucesso."),
