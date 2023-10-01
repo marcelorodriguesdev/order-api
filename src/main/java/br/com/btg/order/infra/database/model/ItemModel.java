@@ -14,7 +14,7 @@ import javax.persistence.*;
 @Builder
 @Entity
 @Table(name = "tb_item")
-public class ItemPedidoModel {
+public class ItemModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -22,11 +22,11 @@ public class ItemPedidoModel {
     @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_order")
-    private PedidoModel order;
+    private OrderModel order;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_product")
-    private ProdutoModel product;
+    private ProductModel product;
 
     private Integer quantity;
 }

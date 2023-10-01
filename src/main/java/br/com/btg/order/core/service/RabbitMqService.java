@@ -2,9 +2,9 @@ package br.com.btg.order.core.service;
 
 import br.com.btg.order.core.domain.NotFoundException;
 import br.com.btg.order.infra.database.model.CustomerModel;
-import br.com.btg.order.infra.database.model.ItemPedidoModel;
-import br.com.btg.order.infra.database.model.PedidoModel;
-import br.com.btg.order.infra.database.model.ProdutoModel;
+import br.com.btg.order.infra.database.model.ItemModel;
+import br.com.btg.order.infra.database.model.OrderModel;
+import br.com.btg.order.infra.database.model.ProductModel;
 import br.com.btg.order.infra.database.repository.ClienteRepository;
 import br.com.btg.order.infra.database.repository.ItemPedidoRepository;
 import br.com.btg.order.infra.database.repository.PedidoRepository;
@@ -35,38 +35,38 @@ public class RabbitMqService {
     @Transactional
     public void tratarPedido(PedidoRequest payload) {
         CustomerModel customerModel = getClienteModel(payload);
-        PedidoModel pedidoModel = salvarPedido(payload, customerModel);
-        salvarItensModel(payload, pedidoModel);
+        OrderModel orderModel = salvarPedido(payload, customerModel);
+        salvarItensModel(payload, orderModel);
     }
 
     private CustomerModel getClienteModel(PedidoRequest payload) {
         return clienteRepository.findById(payload.getCodigoCliente()).orElseThrow(() -> new NotFoundException("Cliente não localizado"));
     }
 
-    private PedidoModel salvarPedido(PedidoRequest payload, CustomerModel customerModel) {
+    private OrderModel salvarPedido(PedidoRequest payload, CustomerModel customerModel) {
         return pedidoRepository.save(getPedidoModel(payload, customerModel));
     }
 
-    private void salvarItensModel(PedidoRequest payload, PedidoModel pedidoModel) {
+    private void salvarItensModel(PedidoRequest payload, OrderModel orderModel) {
         payload.getItens().forEach(itemRequest -> {
-            ItemPedidoModel itemPedidoModel = ItemPedidoModel.builder()
+            ItemModel itemModel = ItemModel.builder()
                     .quantity((int) itemRequest.getQuantidade())
-                    .order(pedidoModel)
+                    .order(orderModel)
                     .product(getProdutoModel(itemRequest))
                     .build();
-            itemPedidoRepository.save(itemPedidoModel);
+            itemPedidoRepository.save(itemModel);
         });
     }
 
-    private PedidoModel getPedidoModel(PedidoRequest payload, CustomerModel customerModel) {
-        return PedidoModel.builder()
+    private OrderModel getPedidoModel(PedidoRequest payload, CustomerModel customerModel) {
+        return OrderModel.builder()
                 .codigoPedido(payload.getCodigoPedido())
                 .customer(customerModel)
                 .dataHoraPedido(LocalDateTime.now())
                 .build();
     }
 
-    private ProdutoModel getProdutoModel(ItemRequest itemRequest) {
+    private ProductModel getProdutoModel(ItemRequest itemRequest) {
         return produtoRepository.findByNomeIgnoreCase(itemRequest.getProduto()).orElseThrow(() -> new NotFoundException("Produto não localizado"));
     }
 

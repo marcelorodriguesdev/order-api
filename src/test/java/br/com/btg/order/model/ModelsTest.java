@@ -1,9 +1,9 @@
 package br.com.btg.order.model;
 
 import br.com.btg.order.infra.database.model.CustomerModel;
-import br.com.btg.order.infra.database.model.ItemPedidoModel;
-import br.com.btg.order.infra.database.model.PedidoModel;
-import br.com.btg.order.infra.database.model.ProdutoModel;
+import br.com.btg.order.infra.database.model.ItemModel;
+import br.com.btg.order.infra.database.model.OrderModel;
+import br.com.btg.order.infra.database.model.ProductModel;
 import org.junit.jupiter.api.Test;
 
 import static com.google.code.beanmatchers.BeanMatchers.*;
@@ -15,7 +15,7 @@ public class ModelsTest {
 
     @Test
     public void testPedidoModel() throws Exception {
-        assertNotNull(new PedidoModel());
+        assertNotNull(new OrderModel());
         assertThat(ModelsTest.class, allOf(hasValidBeanConstructor(),
                 hasValidBeanEquals(),
                 hasValidBeanEqualsExcluding(),
@@ -33,7 +33,7 @@ public class ModelsTest {
 
     @Test
     public void testProdutoModel() throws Exception {
-        assertNotNull(new ProdutoModel());
+        assertNotNull(new ProductModel());
         assertThat(ModelsTest.class, allOf(hasValidBeanConstructor(),
                 hasValidBeanEquals(),
                 hasValidBeanEqualsExcluding(),
@@ -51,7 +51,7 @@ public class ModelsTest {
 
     @Test
     public void testItemPedidoModel() throws Exception {
-        assertNotNull(new ItemPedidoModel());
+        assertNotNull(new ItemModel());
         assertThat(ModelsTest.class, allOf(hasValidBeanConstructor(),
                 hasValidBeanEquals(),
                 hasValidBeanEqualsExcluding(),

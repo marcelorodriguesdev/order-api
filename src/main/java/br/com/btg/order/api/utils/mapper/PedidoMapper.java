@@ -1,6 +1,6 @@
 package br.com.btg.order.api.utils.mapper;
 
-import br.com.btg.order.infra.database.model.PedidoModel;
+import br.com.btg.order.infra.database.model.OrderModel;
 import br.com.btg.order.api.response.ItemPedidoResponse;
 import br.com.btg.order.api.response.PedidoResponse;
 import org.mapstruct.*;
@@ -14,9 +14,9 @@ import java.util.List;
 public abstract class PedidoMapper {
 
     @BeforeMapping
-    protected void setarAtributosDistintosModelToResponse(PedidoModel pedidoModel, @MappingTarget PedidoResponse.PedidoResponseBuilder pedidoResponse) {
+    protected void setarAtributosDistintosModelToResponse(OrderModel orderModel, @MappingTarget PedidoResponse.PedidoResponseBuilder pedidoResponse) {
         List<ItemPedidoResponse> itensResponse = new ArrayList<>();
-        pedidoModel.getItems().forEach(item ->
+        orderModel.getItems().forEach(item ->
                 itensResponse.add(ItemPedidoResponse.builder()
                         .preco(BigDecimal.valueOf(item.getProduct().getPrice()))
                         .quantidade(item.getQuantity())
@@ -24,11 +24,11 @@ public abstract class PedidoMapper {
                         .build())
         );
         pedidoResponse.itens(itensResponse);
-        pedidoResponse.codigoCliente(pedidoModel.getCustomer().getId());
+        pedidoResponse.codigoCliente(orderModel.getCustomer().getId());
     }
 
     @Mapping(target = "itens", ignore = true)
-    public abstract PedidoResponse modelToResponse(PedidoModel pedidoModel);
+    public abstract PedidoResponse modelToResponse(OrderModel orderModel);
 
     @AfterMapping
     protected PedidoResponse arredondarValorParaDuasCasasDecimaisModelToResponse(@MappingTarget PedidoResponse.PedidoResponseBuilder pedidoResponseBuilder) {

@@ -16,7 +16,7 @@ import java.util.List;
 @Builder
 @Entity
 @Table(name = "tb_order")
-public class PedidoModel {
+public class OrderModel {
     @Id
     @Column(name = "id_order")
     private Long codigoPedido;
@@ -30,5 +30,5 @@ public class PedidoModel {
     private LocalDateTime dataHoraPedido;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
-    private List<ItemPedidoModel> items;
+    private List<ItemModel> items;
 }

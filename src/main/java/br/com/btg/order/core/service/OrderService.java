@@ -3,7 +3,7 @@ package br.com.btg.order.core.service;
 import br.com.btg.order.core.domain.NotFoundException;
 import br.com.btg.order.api.utils.mapper.PedidoMapper;
 import br.com.btg.order.infra.database.model.CustomerModel;
-import br.com.btg.order.infra.database.model.PedidoModel;
+import br.com.btg.order.infra.database.model.OrderModel;
 import br.com.btg.order.infra.database.repository.PedidoRepository;
 import br.com.btg.order.api.response.PedidoResponse;
 import br.com.btg.order.api.response.CustomerOrdersResponse;
@@ -26,15 +26,15 @@ public class OrderService {
     private PedidoMapper pedidoMapper;
 
     public PedidoResponse getPedidoPorId(Long id) {
-        PedidoModel pedidoModel = pedidoRepository.findById(id).orElseThrow(() -> new NotFoundException("Pedido não localizado"));
-        PedidoResponse pedidoResponse = pedidoMapper.modelToResponse(pedidoModel);
+        OrderModel orderModel = pedidoRepository.findById(id).orElseThrow(() -> new NotFoundException("Pedido não localizado"));
+        PedidoResponse pedidoResponse = pedidoMapper.modelToResponse(orderModel);
         return pedidoResponse;
     }
 
     public TotalOrderValueResponse getTotalOrderValue(Long id) {
-        PedidoModel pedidoModel = pedidoRepository.findById(id).orElseThrow(() -> new NotFoundException("Pedido não localizado"));
+        OrderModel orderModel = pedidoRepository.findById(id).orElseThrow(() -> new NotFoundException("Pedido não localizado"));
 
-        BigDecimal valorTotal = BigDecimal.valueOf(pedidoModel.getItems().stream()
+        BigDecimal valorTotal = BigDecimal.valueOf(orderModel.getItems().stream()
                 .mapToDouble(item -> item.getQuantity() * item.getProduct().getPrice())
                 .sum()).setScale(2, RoundingMode.CEILING);
 
@@ -46,7 +46,7 @@ public class OrderService {
 
     public CustomerOrdersResponse getOrdersByCustomer(CustomerModel customerModel) {
         List<PedidoResponse> pedidosResponse = new ArrayList<>();
-        List<PedidoModel> pedidosModelPorCliente = getPedidosModelPorCliente(customerModel);
+        List<OrderModel> pedidosModelPorCliente = getPedidosModelPorCliente(customerModel);
         pedidosModelPorCliente.forEach(pedido -> {
             PedidoResponse pedidoResponse = pedidoMapper.modelToResponse(pedido);
             pedidosResponse.add(pedidoResponse);
@@ -58,7 +58,7 @@ public class OrderService {
                 .build();
     }
 
-    public List<PedidoModel> getPedidosModelPorCliente(CustomerModel customerModel) {
+    public List<OrderModel> getPedidosModelPorCliente(CustomerModel customerModel) {
         return pedidoRepository.findAllByCliente(customerModel);
     }
 

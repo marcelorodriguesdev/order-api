@@ -15,7 +15,7 @@ import javax.persistence.Table;
 @Builder
 @Entity
 @Table(name = "tb_product")
-public class ProdutoModel {
+public class ProductModel {
     @Id
     private Long id;
 
