@@ -53,7 +53,7 @@ public class OrderService {
     }
 
     public List<OrderModel> getOrdersByCustomerModel(CustomerModel customerModel) {
-        return orderRepository.findAllByCliente(customerModel);
+        return orderRepository.findAllByCustomer(customerModel);
     }
 
 }
