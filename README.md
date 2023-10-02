@@ -11,7 +11,7 @@ IntelliJ IDEA 2022.3 (Community Edition)
 
 Java 17
 
-Spring Boot 2.7.16
+Spring Boot 2.7.15
 
 MySQL version latest
 
