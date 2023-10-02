@@ -35,14 +35,16 @@ Coloquei um API Gateway para um melhor controle e versionamento da API e ao inv�
 ![request_2.png](..%2Frequest_2.png)
 ![request_3.png](..%2Frequest_3.png)
 
-### Referencias:
+###### Considerações Finais
+
+Se eu tivesse mais tempo pra refatorar o codigo, dividiria o projeto em modulos, separando a entrada via mensageria da API Rest, desacoplando.
+Inicialmente eu ia criar apenas um endpoint usando query param, mas na execução na minha cabeça fez mais sentido criar separado e cada consulta por path param, mapeando as respostas separademente de acordo com a consulta.
+
+
+##### Referencias:
 
 https://www.baeldung.com/spring-amqp
 https://www.baeldung.com/rabbitmq
 https://medium.com/xp-inc/rabbitmq-com-docker-conhecendo-o-admin-cc81f3f6ac3b
 https://calculator.aws/#/
 
-###### Considerações Finais
-
-Se eu tivesse mais tempo pra refatorar o codigo, dividiria o projeto em modulos, separando a entrada via mensageria da API Rest, desacoplando.
-Inicialmente eu ia criar apenas um endpoint usando query param, mas na execução na minha cabeça fez mais sentido criar separado e cada consulta por path param, mapeando as respostas separademente de acordo com a consulta.
