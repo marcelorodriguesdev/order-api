@@ -19,7 +19,7 @@ RabbitMQ version management-alpine
 
 ### Arquitetura
 
-Resolvi fazer a arquitetura diretamente na em Cloud
+Resolvi fazer a arquitetura diretamente em Cloud
 
 ![modelo_cloud.png](..%2Fmodelo_cloud.png)
 
