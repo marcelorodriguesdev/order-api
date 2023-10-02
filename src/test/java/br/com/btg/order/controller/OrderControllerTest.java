@@ -40,8 +40,9 @@ class OrderControllerTest {
     private OrderService orderService;
 
     @Test
-    void dadoPedidoValidoQuandoChamarValorTotalPedidoEntaoRetornoOk() throws Exception {
+    void shouldReturnOkWhenValidOrderCallsGetTotalOrderAmount() throws Exception {
         Long orderId = 1L;
+
         TotalOrderAmountResponse responseMock = TotalOrderAmountResponse.builder()
                 .totalAmount(new BigDecimal(10.00))
                 .order(orderId)
@@ -53,13 +54,14 @@ class OrderControllerTest {
                 .andReturn().getResponse();
 
         String contentAsString = response.getContentAsString();
-        TotalOrderAmountResponse pedidoResponse = new ObjectMapper().readValue(contentAsString, TotalOrderAmountResponse.class);
-        assertThat(pedidoResponse.getTotalAmount().equals(responseMock.getTotalAmount()));
+        TotalOrderAmountResponse orderResponse = new ObjectMapper().readValue(contentAsString, TotalOrderAmountResponse.class);
+        assertThat(orderResponse.getTotalAmount().equals(responseMock.getTotalAmount()));
     }
 
     @Test
-    void dadoClienteValidoQuandoChamarTodosPedidosEntaoRetornoOk() throws Exception {
-        Long clienteId = 1L;
+    void shouldReturnOkWhenValidCustomerCallsGetAllOrders() throws Exception {
+        Long customerId = 1L;
+
         CustomerOrdersResponse responseMock = CustomerOrdersResponse.builder()
                 .customerName("BTG")
                 .build();
@@ -69,17 +71,16 @@ class OrderControllerTest {
                 .name("BTG")
                 .build();
 
-        given(customerService.getCustomerById(clienteId)).willReturn(customerModel);
+        given(customerService.getCustomerById(customerId)).willReturn(customerModel);
         given(orderService.getOrdersByCustomer(customerModel)).willReturn(responseMock);
 
         MockHttpServletResponse response = mvc
-                .perform(get(TestApiConstants.BASE_URL + TestApiConstants.ORDERS_PATH + clienteId))
+                .perform(get(TestApiConstants.BASE_URL + TestApiConstants.ORDERS_PATH + customerId))
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
 
         String contentAsString = response.getContentAsString();
-        CustomerOrdersResponse pedidoResponse = new ObjectMapper().readValue(contentAsString, CustomerOrdersResponse.class);
-        assertThat(pedidoResponse.getCustomerName().equals(responseMock.getCustomerName()));
+        CustomerOrdersResponse orderResponse = new ObjectMapper().readValue(contentAsString, CustomerOrdersResponse.class);
+        assertThat(orderResponse.getCustomerName().equals(responseMock.getCustomerName()));
     }
-
 }

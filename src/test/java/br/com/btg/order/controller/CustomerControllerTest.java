@@ -36,11 +36,12 @@ class CustomerControllerTest {
     private CustomerService customerService;
 
     @Test
-    void dadoClienteValidoQuandoChamarQuantidadePedidosEntaoRetornoOk() throws Exception {
+    void shouldReturnOkWhenValidCustomerCallsGetOrdersQuantity() throws Exception {
         Long customerId = 1L;
-        int quantidadePedidos = 3;
+        int ordersQuantity = 3;
+
         CustomerOrderQuantityResponse responseMock = CustomerOrderQuantityResponse.builder()
-                .ordersQuantity(quantidadePedidos)
+                .ordersQuantity(ordersQuantity)
                 .build();
         given(customerService.getOrderQuantityForCustomerById(customerId)).willReturn(responseMock);
         MockHttpServletResponse response = mvc
@@ -54,11 +55,12 @@ class CustomerControllerTest {
     }
 
     @Test
-    void dadoClienteInvalidoQuandoChamarQuantidadePedidosEntaoRetornoNotFound() throws Exception {
-        Long clienteId = 1L;
-        given(customerService.getOrderQuantityForCustomerById(clienteId)).willThrow(new NotFoundException("Customer not found"));
+    void shouldReturnNotFoundWhenInvalidCustomerCallsGetOrdersQuantity() throws Exception {
+        Long customerId = 1L;
+
+        given(customerService.getOrderQuantityForCustomerById(customerId)).willThrow(new NotFoundException("Customer not found"));
         MockHttpServletResponse response = mvc
-                .perform(get(TestApiConstants.BASE_URL + TestApiConstants.CUSTOMERS_PATH + clienteId + TestApiConstants.ORDERS_QUANTITY_PATH))
+                .perform(get(TestApiConstants.BASE_URL + TestApiConstants.CUSTOMERS_PATH + customerId + TestApiConstants.ORDERS_QUANTITY_PATH))
                 .andExpect(status().isNotFound())
                 .andReturn().getResponse();
 
@@ -68,11 +70,12 @@ class CustomerControllerTest {
     }
 
     @Test
-    void dadoClienteInvalidoQuandoErroInternoEntaoRetornoInternalServerError() throws Exception {
-        Long clienteId = 1L;
-        given(customerService.getOrderQuantityForCustomerById(clienteId)).willThrow(new RuntimeException("Internal server error"));
+    void shouldReturnInternalServerErrorWhenInvalidCustomerCausesInternalError() throws Exception {
+        Long customerId = 1L;
+
+        given(customerService.getOrderQuantityForCustomerById(customerId)).willThrow(new RuntimeException("Internal server error"));
         MockHttpServletResponse response = mvc
-                .perform(get(TestApiConstants.BASE_URL + TestApiConstants.CUSTOMERS_PATH + clienteId + TestApiConstants.ORDERS_QUANTITY_PATH))
+                .perform(get(TestApiConstants.BASE_URL + TestApiConstants.CUSTOMERS_PATH + customerId + TestApiConstants.ORDERS_QUANTITY_PATH))
                 .andExpect(status().isInternalServerError())
                 .andReturn().getResponse();
 
