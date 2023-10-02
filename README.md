@@ -21,19 +21,19 @@ RabbitMQ version management-alpine
 
 Resolvi fazer a arquitetura diretamente em Cloud
 
-![modelo_cloud.png](..%2Fmodelo_cloud.png)
+![modelo_cloud.png](project-images%2Fmodelo_cloud.png)
 
 Coloquei um API Gateway para um melhor controle e versionamento da API e ao invés de provisionar um RDS MySQL, optei pelo Aurora MySQL que alem de ser mais performático é também mais barato.
 
 ### Modelagem Banco de Dados
 
-![modelo_db.png](..%2Fmodelo_db.png)
+![modelo_db.png](project-images%2Fmodelo_db.png)
 
 ### Evidencia de testes 
 
-![request_1.png](..%2Frequest_1.png)
-![request_2.png](..%2Frequest_2.png)
-![request_3.png](..%2Frequest_3.png)
+![request_1.png](project-images%2Frequest_1.png)
+![request_2.png](project-images%2Frequest_2.png)
+![request_3.png](project-images%2Frequest_3.png)
 
 ###### Considerações Finais
 
