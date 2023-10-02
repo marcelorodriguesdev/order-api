@@ -64,6 +64,6 @@ public class RabbitMQService {
     }
 
     private ProductModel getProduct(ItemRequest itemRequest) {
-        return productRepository.findByNameIgnoreCase(itemRequest.getProduct()).orElseThrow(() -> new NotFoundException("Product not found."));
+        return productRepository.findByName(itemRequest.getProduct()).orElseThrow(() -> new NotFoundException("Product not found."));
     }
 }
