@@ -18,7 +18,7 @@ services:
       - ./src/main/resources/scripts/script_db.sql:/docker-entrypoint-initdb.d/script_db.sql
 
   rabbitmq:
-    image: rabbitmq:3-management
+    image: rabbitmq:management-alpine
     container_name: rabbit
     restart: always
     environment:
