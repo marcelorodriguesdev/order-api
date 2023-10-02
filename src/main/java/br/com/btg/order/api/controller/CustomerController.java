@@ -32,15 +32,4 @@ public class CustomerController {
         return customerService.getOrderQuantityForCustomerById(id);
     }
 
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "Cliente salvo com sucesso."),
-            @ApiResponse(code = 500, message = "Erro interno", examples = @Example(value = @ExampleProperty(mediaType = "application/json", value = ERROR_RESPONSE_EXCEPTION_MODEL))),
-        }
-    )
-    public CustomerResponse postCliente(@RequestBody @Valid CustomerRequest customerRequest) {
-        return customerService.salvarCliente(customerRequest);
-    }
-
 }

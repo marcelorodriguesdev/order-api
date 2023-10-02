@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 public class ModelsTest {
 
     @Test
-    public void testPedidoModel() throws Exception {
+    public void testOrderModel() throws Exception {
         assertNotNull(new OrderModel());
         assertThat(ModelsTest.class, allOf(hasValidBeanConstructor(),
                 hasValidBeanEquals(),
@@ -32,7 +32,7 @@ public class ModelsTest {
     }
 
     @Test
-    public void testProdutoModel() throws Exception {
+    public void testProductModel() throws Exception {
         assertNotNull(new ProductModel());
         assertThat(ModelsTest.class, allOf(hasValidBeanConstructor(),
                 hasValidBeanEquals(),
@@ -50,7 +50,7 @@ public class ModelsTest {
     }
 
     @Test
-    public void testItemPedidoModel() throws Exception {
+    public void testItemModel() throws Exception {
         assertNotNull(new ItemModel());
         assertThat(ModelsTest.class, allOf(hasValidBeanConstructor(),
                 hasValidBeanEquals(),
@@ -68,7 +68,7 @@ public class ModelsTest {
     }
 
     @Test
-    public void testClienteModel() throws Exception {
+    public void testCustomerModel() throws Exception {
         assertNotNull(new CustomerModel());
         assertThat(ModelsTest.class, allOf(hasValidBeanConstructor(),
                 hasValidBeanEquals(),
@@ -84,5 +84,4 @@ public class ModelsTest {
                 hasValidGettersAndSettersExcluding(),
                 hasValidGettersAndSettersFor()));
     }
-
 }

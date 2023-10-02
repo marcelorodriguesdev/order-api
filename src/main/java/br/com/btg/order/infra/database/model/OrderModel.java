@@ -7,7 +7,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -19,15 +18,12 @@ import java.util.List;
 public class OrderModel {
     @Id
     @Column(name = "id_order")
-    private Long codigoPedido;
+    private Long orderId;
 
     @JsonManagedReference
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_customer")
     private CustomerModel customer;
-
-    @Column(name = "data_hora_pedido")
-    private LocalDateTime dataHoraPedido;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<ItemModel> items;

@@ -25,12 +25,6 @@ public class OrderService {
     @Autowired
     private OrderMapper orderMapper;
 
-    public OrderResponse getPedidoPorId(Long id) {
-        OrderModel orderModel = orderRepository.findById(id).orElseThrow(() -> new NotFoundException("Pedido não localizado"));
-        OrderResponse orderResponse = orderMapper.modelToResponse(orderModel);
-        return orderResponse;
-    }
-
     public TotalOrderAmountResponse getTotalOrderValue(Long id) {
         OrderModel orderModel = orderRepository.findById(id).orElseThrow(() -> new NotFoundException("Pedido não localizado"));
 
@@ -45,20 +39,20 @@ public class OrderService {
     }
 
     public CustomerOrdersResponse getOrdersByCustomer(CustomerModel customerModel) {
-        List<OrderResponse> pedidosResponse = new ArrayList<>();
-        List<OrderModel> pedidosModelPorCliente = getPedidosModelPorCliente(customerModel);
-        pedidosModelPorCliente.forEach(pedido -> {
+        List<OrderResponse> ordersResponse = new ArrayList<>();
+        List<OrderModel> ordersByCustomerModel = getOrdersByCustomerModel(customerModel);
+        ordersByCustomerModel.forEach(pedido -> {
             OrderResponse orderResponse = orderMapper.modelToResponse(pedido);
-            pedidosResponse.add(orderResponse);
+            ordersResponse.add(orderResponse);
         });
         return CustomerOrdersResponse.builder()
                 .customerId(customerModel.getId())
                 .customerName(customerModel.getName())
-                .orders(pedidosResponse)
+                .orders(ordersResponse)
                 .build();
     }
 
-    public List<OrderModel> getPedidosModelPorCliente(CustomerModel customerModel) {
+    public List<OrderModel> getOrdersByCustomerModel(CustomerModel customerModel) {
         return orderRepository.findAllByCliente(customerModel);
     }
 

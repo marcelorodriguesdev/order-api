@@ -2,19 +2,17 @@ package br.com.btg.order.controller;
 
 import br.com.btg.order.api.controller.CustomerController;
 import br.com.btg.order.core.domain.NotFoundException;
-import br.com.btg.order.core.domain.handler.RestExceptionHandler;
-import br.com.btg.order.api.request.CustomerRequest;
-import br.com.btg.order.api.response.CustomerResponse;
+import br.com.btg.order.core.domain.handler.ExceptionHandlerAdvice;
 import br.com.btg.order.api.response.ErrorResponse;
 import br.com.btg.order.api.response.CustomerOrderQuantityResponse;
 import br.com.btg.order.core.service.CustomerService;
+import br.com.btg.order.utils.TestApiConstants;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -27,7 +25,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @AutoConfigureMockMvc
-@SpringBootTest(classes = {CustomerController.class, RestExceptionHandler.class})
+@SpringBootTest(classes = {CustomerController.class, ExceptionHandlerAdvice.class})
 @EnableWebMvc
 class CustomerControllerTest {
 
@@ -39,14 +37,14 @@ class CustomerControllerTest {
 
     @Test
     void dadoClienteValidoQuandoChamarQuantidadePedidosEntaoRetornoOk() throws Exception {
-        Long clienteId = 1L;
+        Long customerId = 1L;
         int quantidadePedidos = 3;
         CustomerOrderQuantityResponse responseMock = CustomerOrderQuantityResponse.builder()
                 .ordersQuantity(quantidadePedidos)
                 .build();
-        given(customerService.getOrderQuantityForCustomerById(clienteId)).willReturn(responseMock);
+        given(customerService.getOrderQuantityForCustomerById(customerId)).willReturn(responseMock);
         MockHttpServletResponse response = mvc
-                .perform(get("http://localhost:8081/" + "v1/customers/" + clienteId + "/orders_quantity"))
+                .perform(get(TestApiConstants.BASE_URL + TestApiConstants.CUSTOMERS_PATH + customerId + TestApiConstants.ORDERS_QUANTITY_PATH))
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
 
@@ -56,34 +54,11 @@ class CustomerControllerTest {
     }
 
     @Test
-    void dadoClienteValidoQuandoChamarSalvarClienteEntaoRetornoCreated() throws Exception {
-        ObjectMapper mapper =  new ObjectMapper();
-        CustomerRequest customerRequest = CustomerRequest.builder()
-                .name("Caio")
-                .build();
-        CustomerResponse responseMock = CustomerResponse.builder()
-                .message("Cliente salvo com sucesso")
-                .build();
-        given(customerService.salvarCliente(any())).willReturn(responseMock);
-        MockHttpServletResponse response = mvc
-                .perform(post("http://localhost:8081/" + "v1/customers/")
-                        .content(mapper.writeValueAsString(customerRequest).getBytes())
-                        .accept(MediaType.APPLICATION_JSON)
-                        .contentType("application/json"))
-                .andExpect(status().isCreated())
-                .andReturn().getResponse();
-
-        String contentAsString = response.getContentAsString();
-        CustomerResponse customerResponse = mapper.readValue(contentAsString, CustomerResponse.class);
-        assertThat(customerResponse.getMessage().equals(responseMock.getMessage()));
-    }
-
-    @Test
     void dadoClienteInvalidoQuandoChamarQuantidadePedidosEntaoRetornoNotFound() throws Exception {
         Long clienteId = 1L;
-        given(customerService.getOrderQuantityForCustomerById(clienteId)).willThrow(new NotFoundException("Cliente não localizado"));
+        given(customerService.getOrderQuantityForCustomerById(clienteId)).willThrow(new NotFoundException("Customer not found"));
         MockHttpServletResponse response = mvc
-                .perform(get("http://localhost:8081/" + "v1/customers/" + clienteId + "/orders_quantity"))
+                .perform(get(TestApiConstants.BASE_URL + TestApiConstants.CUSTOMERS_PATH + clienteId + TestApiConstants.ORDERS_QUANTITY_PATH))
                 .andExpect(status().isNotFound())
                 .andReturn().getResponse();
 
@@ -95,9 +70,9 @@ class CustomerControllerTest {
     @Test
     void dadoClienteInvalidoQuandoErroInternoEntaoRetornoInternalServerError() throws Exception {
         Long clienteId = 1L;
-        given(customerService.getOrderQuantityForCustomerById(clienteId)).willThrow(new RuntimeException("Erro interno"));
+        given(customerService.getOrderQuantityForCustomerById(clienteId)).willThrow(new RuntimeException("Internal server error"));
         MockHttpServletResponse response = mvc
-                .perform(get("http://localhost:8081/" + "v1/customers/" + clienteId + "/orders_quantity"))
+                .perform(get(TestApiConstants.BASE_URL + TestApiConstants.CUSTOMERS_PATH + clienteId + TestApiConstants.ORDERS_QUANTITY_PATH))
                 .andExpect(status().isInternalServerError())
                 .andReturn().getResponse();
 
@@ -105,25 +80,4 @@ class CustomerControllerTest {
         ErrorResponse errorResponse = new ObjectMapper().readValue(contentAsString, ErrorResponse.class);
         assertThat(errorResponse.getCode().equals("500"));
     }
-
-
-    @Test
-    void dadoClienteInvalidoQuandoChamarSalvarClienteEntaoRetornoBadRequest() throws Exception {
-        ObjectMapper mapper =  new ObjectMapper();
-        CustomerRequest customerRequest = CustomerRequest.builder()
-                .name("")
-                .build();
-        MockHttpServletResponse response = mvc
-                .perform(post("http://localhost:8081/" + "v1/customers")
-                        .content(mapper.writeValueAsString(customerRequest).getBytes())
-                        .accept(MediaType.APPLICATION_JSON)
-                        .contentType("application/json"))
-                .andExpect(status().isBadRequest())
-                .andReturn().getResponse();
-
-        String contentAsString = response.getContentAsString();
-        ErrorResponse errorResponse = mapper.readValue(contentAsString, ErrorResponse.class);
-        assertThat(errorResponse.getCode().equals(400));
-    }
-
 }

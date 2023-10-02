@@ -13,12 +13,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestControllerAdvice
-public class RestExceptionHandler {
+public class ExceptionHandlerAdvice {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     public ErrorResponse handleMethodArgumentNotValid(MethodArgumentNotValidException ex) {
-        return new ErrorResponse("400", "Erro na validacao dos campos", buildFieldErrors(ex));
+        return new ErrorResponse("400", "Error field validation.", buildFieldErrors(ex));
     }
 
     @ExceptionHandler(RuntimeException.class)

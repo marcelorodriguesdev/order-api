@@ -1,12 +1,13 @@
 package br.com.btg.order.controller;
 
 import br.com.btg.order.api.controller.OrderController;
-import br.com.btg.order.core.domain.handler.RestExceptionHandler;
+import br.com.btg.order.core.domain.handler.ExceptionHandlerAdvice;
 import br.com.btg.order.infra.database.model.CustomerModel;
 import br.com.btg.order.api.response.CustomerOrdersResponse;
 import br.com.btg.order.api.response.TotalOrderAmountResponse;
 import br.com.btg.order.core.service.CustomerService;
 import br.com.btg.order.core.service.OrderService;
+import br.com.btg.order.utils.TestApiConstants;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @AutoConfigureMockMvc
-@SpringBootTest(classes = {OrderController.class, RestExceptionHandler.class})
+@SpringBootTest(classes = {OrderController.class, ExceptionHandlerAdvice.class})
 @EnableWebMvc
 class OrderControllerTest {
 
@@ -40,14 +41,14 @@ class OrderControllerTest {
 
     @Test
     void dadoPedidoValidoQuandoChamarValorTotalPedidoEntaoRetornoOk() throws Exception {
-        Long pedidoId = 1L;
+        Long orderId = 1L;
         TotalOrderAmountResponse responseMock = TotalOrderAmountResponse.builder()
                 .totalAmount(new BigDecimal(10.00))
-                .order(pedidoId)
+                .order(orderId)
                 .build();
-        given(orderService.getTotalOrderValue(pedidoId)).willReturn(responseMock);
+        given(orderService.getTotalOrderValue(orderId)).willReturn(responseMock);
         MockHttpServletResponse response = mvc
-                .perform(get("http://localhost:8081/" + "v1/orders/" + pedidoId + "/total_amount"))
+                .perform(get(TestApiConstants.BASE_URL + TestApiConstants.ORDERS_PATH + orderId + TestApiConstants.TOTAL_AMOUNT_PATH))
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
 
@@ -60,19 +61,19 @@ class OrderControllerTest {
     void dadoClienteValidoQuandoChamarTodosPedidosEntaoRetornoOk() throws Exception {
         Long clienteId = 1L;
         CustomerOrdersResponse responseMock = CustomerOrdersResponse.builder()
-                .customerName("Caio")
+                .customerName("BTG")
                 .build();
 
         CustomerModel customerModel = CustomerModel.builder()
                 .id(1L)
-                .name("Caio")
+                .name("BTG")
                 .build();
 
         given(customerService.getCustomerById(clienteId)).willReturn(customerModel);
         given(orderService.getOrdersByCustomer(customerModel)).willReturn(responseMock);
 
         MockHttpServletResponse response = mvc
-                .perform(get("http://localhost:8081/" + "v1/orders/" + clienteId))
+                .perform(get(TestApiConstants.BASE_URL + TestApiConstants.ORDERS_PATH + clienteId))
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
 

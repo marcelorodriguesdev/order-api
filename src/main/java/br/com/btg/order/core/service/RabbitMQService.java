@@ -15,10 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
-
 @Service
-public class RabbitMqService {
+public class RabbitMQService {
 
     @Autowired
     private CustomerRepository customerRepository;
@@ -60,14 +58,12 @@ public class RabbitMqService {
 
     private OrderModel getOrder(OrderRequest payload, CustomerModel customerModel) {
         return OrderModel.builder()
-                .codigoPedido(payload.getOrderId())
+                .orderId(payload.getOrderId())
                 .customer(customerModel)
-                .dataHoraPedido(LocalDateTime.now())
                 .build();
     }
 
     private ProductModel getProduct(ItemRequest itemRequest) {
-        return productRepository.findByNameIgnoreCase(itemRequest.getProduct()).orElseThrow(() -> new NotFoundException("Produto não localizado"));
+        return productRepository.findByNameIgnoreCase(itemRequest.getProduct()).orElseThrow(() -> new NotFoundException("Product not found."));
     }
-
 }

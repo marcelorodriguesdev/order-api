@@ -24,7 +24,7 @@ public class CustomerService {
 
     public CustomerOrderQuantityResponse getOrderQuantityForCustomerById(Long id) {
         CustomerModel customerModel = customerRepository.findById(id).orElseThrow(() -> new NotFoundException("Cliente não localizado"));
-        int quantidadeDePedidos = orderService.getPedidosModelPorCliente(customerModel).size();
+        int quantidadeDePedidos = orderService.getOrdersByCustomerModel(customerModel).size();
         return CustomerOrderQuantityResponse.builder()
                 .customerId(id)
                 .customerName(customerModel.getName())
