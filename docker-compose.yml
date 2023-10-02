@@ -15,7 +15,7 @@ services:
     expose:
       - '3306'
     volumes:
-      - ./src/main/resources/scripts/ddl.sql:/docker-entrypoint-initdb.d/ddl.sql
+      - ./src/main/resources/scripts/script_db.sql:/docker-entrypoint-initdb.d/script_db.sql
 
   rabbitmq:
     image: rabbitmq:3-management
