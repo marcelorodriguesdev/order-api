@@ -11,8 +11,8 @@ import java.util.List;
 @AllArgsConstructor
 public class OrderResponse {
 
-    private Long codigoPedido;
-    private Long codigoCliente;
-    private List<ItemResponse> itens;
+    private Long orderId;
+    private Long customerId;
+    private List<ItemResponse> items;
 
 }

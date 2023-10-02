@@ -41,8 +41,8 @@ public class OrderService {
     public CustomerOrdersResponse getOrdersByCustomer(CustomerModel customerModel) {
         List<OrderResponse> ordersResponse = new ArrayList<>();
         List<OrderModel> ordersByCustomerModel = getOrdersByCustomerModel(customerModel);
-        ordersByCustomerModel.forEach(pedido -> {
-            OrderResponse orderResponse = orderMapper.modelToResponse(pedido);
+        ordersByCustomerModel.forEach(order -> {
+            OrderResponse orderResponse = orderMapper.modelToResponse(order);
             ordersResponse.add(orderResponse);
         });
         return CustomerOrdersResponse.builder()

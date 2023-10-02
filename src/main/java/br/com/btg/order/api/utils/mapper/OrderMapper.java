@@ -14,7 +14,7 @@ import java.util.List;
 public abstract class OrderMapper {
 
     @BeforeMapping
-    protected void setarAtributosDistintosModelToResponse(OrderModel orderModel, @MappingTarget OrderResponse.OrderResponseBuilder pedidoResponse) {
+    protected void setDistinctAttributesModelToResponse(OrderModel orderModel, @MappingTarget OrderResponse.OrderResponseBuilder pedidoResponse) {
         List<ItemResponse> itensResponse = new ArrayList<>();
         orderModel.getItems().forEach(item ->
                 itensResponse.add(ItemResponse.builder()
@@ -23,17 +23,17 @@ public abstract class OrderMapper {
                         .product(item.getProduct().getName())
                         .build())
         );
-        pedidoResponse.itens(itensResponse);
-        pedidoResponse.codigoCliente(orderModel.getCustomer().getId());
+        pedidoResponse.items(itensResponse);
+        pedidoResponse.customerId(orderModel.getCustomer().getId());
     }
 
-    @Mapping(target = "itens", ignore = true)
+    @Mapping(target = "items", ignore = true)
     public abstract OrderResponse modelToResponse(OrderModel orderModel);
 
     @AfterMapping
-    protected OrderResponse arredondarValorParaDuasCasasDecimaisModelToResponse(@MappingTarget OrderResponse.OrderResponseBuilder pedidoResponseBuilder) {
+    protected OrderResponse roundValueToTwoDecimalPlacesModelToResponse(@MappingTarget OrderResponse.OrderResponseBuilder pedidoResponseBuilder) {
         OrderResponse orderResponse = pedidoResponseBuilder.build();
-        orderResponse.getItens().forEach(item -> item.setPrice(item.getPrice().setScale(2, RoundingMode.CEILING)));
+        orderResponse.getItems().forEach(item -> item.setPrice(item.getPrice().setScale(2, RoundingMode.CEILING)));
         return orderResponse;
     }
 

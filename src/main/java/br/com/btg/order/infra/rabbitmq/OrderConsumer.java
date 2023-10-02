@@ -17,7 +17,7 @@ public class OrderConsumer {
     @Autowired
     private RabbitMQService rabbitMqService;
 
-    @RabbitListener(queues = "${rabbitmq.queue.name}")
+    @RabbitListener(queues = "${rabbitmq.queue}")
     public void orderListener(@Payload OrderRequest payload) {
         log(INFO, new LoggerResponse("New order received", payload));
         rabbitMqService.processOrder(payload);

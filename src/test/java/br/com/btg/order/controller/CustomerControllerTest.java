@@ -66,7 +66,7 @@ class CustomerControllerTest {
 
         String contentAsString = response.getContentAsString();
         ErrorResponse errorResponse = new ObjectMapper().readValue(contentAsString, ErrorResponse.class);
-        assertThat(errorResponse.getMessage().equals("Cliente não localizado"));
+        assertThat(errorResponse.getMessage().equals("Customer not found."));
     }
 
     @Test

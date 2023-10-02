@@ -27,6 +27,7 @@ CREATE TABLE IF NOT EXISTS tb_item (
 );
 
 INSERT INTO tb_customer(id, name) VALUES (1, 'BTG Pactual');
+INSERT INTO tb_customer(id, name) VALUES (2, 'BTG Teste');
 
 INSERT INTO tb_product(id, name, price) VALUES (1, 'Lapis', 2.50);
 INSERT INTO tb_product(id, name, price) VALUES (2, 'Estojo', 3.99);
@@ -36,8 +37,12 @@ INSERT INTO tb_product(id, name, price) VALUES (4, 'Caneta', 3.00);
 INSERT INTO tb_order(id_order, id_customer) VALUES (1, 1);
 INSERT INTO tb_order(id_order, id_customer) VALUES (2, 1);
 INSERT INTO tb_order(id_order, id_customer) VALUES (3, 1);
+INSERT INTO tb_order(id_order, id_customer) VALUES (4, 2);
 
-INSERT INTO tb_item(id, id_order, id_product, quantity) VALUES ('1', '1', '1', '7');
-INSERT INTO tb_item(id, id_order, id_product, quantity) VALUES ('2', '1', '3', '1');
-INSERT INTO tb_item(id, id_order, id_product, quantity) VALUES ('3', '2', '2', '4');
-INSERT INTO tb_item(id, id_order, id_product, quantity) VALUES ('4', '2', '4', '3');
+INSERT INTO tb_item(id, id_order, id_product, quantity) VALUES (1, 1, 1, 7);
+INSERT INTO tb_item(id, id_order, id_product, quantity) VALUES (2, 1, 3, 1);
+INSERT INTO tb_item(id, id_order, id_product, quantity) VALUES (3, 2, 2, 4);
+INSERT INTO tb_item(id, id_order, id_product, quantity) VALUES (4, 2, 4, 3);
+INSERT INTO tb_item(id, id_order, id_product, quantity) VALUES (5, 4, 2, 2);
+INSERT INTO tb_item(id, id_order, id_product, quantity) VALUES (6, 4, 1, 2);
+INSERT INTO tb_item(id, id_order, id_product, quantity) VALUES (7, 3, 1, 2);
