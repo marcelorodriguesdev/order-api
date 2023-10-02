@@ -26,15 +26,15 @@ public class OrderService {
     private OrderMapper orderMapper;
 
     public TotalOrderAmountResponse getTotalOrderValue(Long id) {
-        OrderModel orderModel = orderRepository.findById(id).orElseThrow(() -> new NotFoundException("Pedido não localizado"));
+        OrderModel orderModel = orderRepository.findById(id).orElseThrow(() -> new NotFoundException("Order not found."));
 
-        BigDecimal valorTotal = BigDecimal.valueOf(orderModel.getItems().stream()
+        BigDecimal totalAmount = BigDecimal.valueOf(orderModel.getItems().stream()
                 .mapToDouble(item -> item.getQuantity() * item.getProduct().getPrice())
                 .sum()).setScale(2, RoundingMode.CEILING);
 
         return TotalOrderAmountResponse.builder()
                 .order(id)
-                .totalAmount(valorTotal)
+                .totalAmount(totalAmount)
                 .build();
     }
 

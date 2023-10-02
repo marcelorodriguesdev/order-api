@@ -26,15 +26,15 @@ public class OrderController {
     @Autowired
     private CustomerService customerService;
 
-    @GetMapping(value = "/{id}/total_amount")
+    @GetMapping(value = "/{orderId}/total_amount")
     @ResponseStatus(HttpStatus.OK)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Total amount returned successfully."),
             @ApiResponse(code = 404, message = "Order not found.", examples = @Example(value = @ExampleProperty(mediaType = "application/json", value = ERROR_RESPONSE_EXCEPTION_MODEL))),
             @ApiResponse(code = 500, message = "Internal server error,", examples = @Example(value = @ExampleProperty(mediaType = "application/json", value = ERROR_RESPONSE_EXCEPTION_MODEL))),
     })
-    public TotalOrderAmountResponse getTotalOrderValue(@PathVariable("id") Long id) {
-        return orderService.getTotalOrderValue(id);
+    public TotalOrderAmountResponse getTotalOrderValue(@PathVariable("orderId") Long orderId) {
+        return orderService.getTotalOrderValue(orderId);
     }
 
     @GetMapping(value = "/{customerId}")
