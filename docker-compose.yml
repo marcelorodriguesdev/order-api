@@ -1,0 +1,29 @@
+version: '3.9'
+services:
+  db:
+    image: mysql:latest
+    restart: always
+    container_name: db_order
+    environment:
+      MYSQL_DATABASE: 'order_db'
+      MYSQL_USER: 'guest'
+      MYSQL_PASSWORD: '123456'
+      MYSQL_ROOT_USER: 'root'
+      MYSQL_ROOT_PASSWORD: '123456'
+    ports:
+      - '3306:3306'
+    expose:
+      - '3306'
+    volumes:
+      - ./src/main/resources/scripts/script_db.sql:/docker-entrypoint-initdb.d/script_db.sql
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbit
+    restart: always
+    environment:
+      RABBITMQ_DEFAULT_USER: 'rabbitmq'
+      RABBITMQ_DEFAULT_PASS: '123456'
+    ports:
+      - "5672:5672"
+      - "15672:15672"
