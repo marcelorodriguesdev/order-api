@@ -1,4 +1,4 @@
-# Order
+# Desafio BTG Order
 
 ##### Para subir o docker rodar o seguinte comando na raíz do projeto:
 `docker-compose up`
